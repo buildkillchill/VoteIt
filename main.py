@@ -30,6 +30,7 @@ async def on_message(message):
         options = None
         duration = get_config('default_duration')
         notify_when_ending = False
+        anonymous = False
 
         async def command_error(reason=" :confused: "):
             await client.send_message(message.channel, "Command error: *{0}*\n"
@@ -42,6 +43,9 @@ async def on_message(message):
 
             if "--notify" in last_item or "-N" in last_item:
                 notify_when_ending = True
+
+            if "--anonymous" in last_item or "-A" in last_item:
+                anonymous = True
 
             skip_next = False
 
@@ -68,6 +72,9 @@ async def on_message(message):
 
                     if any(x in subcmd for x in ["-N", "--notify"]):
                         notify_when_ending = True
+
+                    if any(x in subcmd for x in ["-A", "--anonymous"]):
+                        anonymous = True
 
                 if options is None:
                     await command_error("No options set.")
